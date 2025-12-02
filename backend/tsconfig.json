@@ -2,22 +2,24 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    // See also https://aka.ms/tsconfig/module
-    "module": "commonjs",
+
+    "module": "nodenext",
     "target": "esnext",
-    "types": [],
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "experimentalDecorators": true,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
 
     "strict": true,
-    "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
-  },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  }
 }
