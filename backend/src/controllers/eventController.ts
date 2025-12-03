@@ -53,7 +53,7 @@ export const createEvent = async (
   }
 };
 
-export const getEventsByAnimalId = async (
+export const getAnimalWithEvents = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -65,21 +65,31 @@ export const getEventsByAnimalId = async (
   }
 
   try {
-    // Check if animal exists
-    const animal = await Animal.findByPk(animalId);
+    // Fetch the animal along with its events using Sequelize's `include` option
+    const animal = await Animal.findOne({
+      where: { id: animalId },
+      include: {
+        model: Event,
+        as: "events",
+        required: false,
+      },
+    });
+
     if (!animal) {
       res.status(404).json({ error: "Animal not found" });
       return;
     }
-
-    // Get all events for the animal
-    const events = await Event.findAll({
-      where: { animal_id: animalId },
+    res.status(200).json({
+      animal: {
+        id: animal.id,
+        name: animal.name,
+        species: animal.species,
+        birth_date: animal.birth_date,
+      },
+      events: animal.events, // This will contain the associated events
     });
-
-    res.status(200).json(events);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error retrieving events" });
+    res.status(500).json({ error: "Error retrieving animal and events" });
   }
 };

@@ -19,22 +19,6 @@ export const getAllAnimals = async (
   }
 };
 
-export const getAnimalById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const animal = await Animal.findByPk(req.params.id);
-    if (animal) {
-      res.json(animal);
-    } else {
-      res.status(404).send("Animal not found");
-    }
-  } catch (error) {
-    res.status(500).send("Error retrieving animal");
-  }
-};
-
 export const createAnimal = async (
   req: Request,
   res: Response

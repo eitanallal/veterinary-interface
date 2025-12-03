@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Table, Column, Model, DataType, HasMany } from "sequelize-typescript";
+import Event from "./event";
 
 @Table({
   tableName: "animals",
@@ -29,4 +30,7 @@ export default class Animal extends Model<Animal> {
     allowNull: true,
   })
   declare birth_date?: Date;
+
+  @HasMany(() => Event)
+  declare events?: Event[];
 }

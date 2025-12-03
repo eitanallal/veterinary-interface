@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import {
   IsNotEmpty,
   IsOptional,
@@ -21,5 +22,6 @@ export class CreateAnimalDTO {
 
   @IsOptional()
   @IsDate({ message: "Birth date must be a valid date" })
+  @Transform(({ value }) => new Date(value), { toClassOnly: true }) // Transform ISO string to Date
   birth_date?: Date;
 }
