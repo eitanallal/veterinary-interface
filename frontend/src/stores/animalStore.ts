@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import axiosInstance from '@/axios'
 
 interface AnimalData {
-  id: string
+  id?: string
   name: string
   species: string
   birth_date: string
@@ -17,7 +17,7 @@ interface Event {
   id: string
   type: string
   description: string
-  date: string
+  event_date: string
 }
 
 export const useAnimalStore = defineStore('animal', {
@@ -45,12 +45,13 @@ export const useAnimalStore = defineStore('animal', {
     },
     async addAnimal(animal: Omit<Animal, 'id' | 'events'>) {
       try {
-        await axiosInstance.post('/animals', animal).then((response) => {
+        await axiosInstance.post('/animals', animal.animal).then((response) => {
           this.animals.push(response.data)
           return response.data
         })
       } catch (error) {
         console.error('Error adding animal:', error)
+        throw error // Propager l'erreur au composant
       }
     },
     async addEventToAnimal(animalId: string, event: Omit<Event, 'id'>) {

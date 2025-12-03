@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import {
   IsNotEmpty,
   IsOptional,
@@ -18,6 +19,7 @@ export class CreateEventDTO {
 
   @IsOptional()
   @IsDate({ message: "Event date must be a valid date" })
+  @Transform(({ value }) => new Date(value), { toClassOnly: true }) // Transform ISO string to Date
   event_date?: Date;
 
   @IsNotEmpty({ message: "Animal ID is required" })
