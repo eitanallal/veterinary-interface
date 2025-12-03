@@ -1,29 +1,15 @@
 <template>
-  <v-app class="flex flex-col h-screen">
-    <!-- App Bar (Header) -->
-    <v-app-bar
-      app
-      color="primary"
-      dark
-      class="w-screen flex items-center justify-between px-4 py-2 bg-blue-400 top-0 sticky"
-    >
-      <!-- Use router-link directly inside v-btn -->
-      <router-link to="/">
-        <v-btn text>Home</v-btn>
-      </router-link>
-      <v-toolbar-title class="text-2xl">Animal Management System</v-toolbar-title>
-      <router-link to="/add-animal">
-        <v-btn text>Add Animal</v-btn>
-      </router-link>
-    </v-app-bar>
+  <div class="min-h-screen flex flex-col bg-blue-50">
+    <header class="bg-blue-600 text-white px-4 py-3 flex items-center justify-between">
+      <router-link to="/" class="text-white hover:text-blue-200">Home</router-link>
+      <h1 class="text-2xl font-bold">Animal Management System</h1>
+      <router-link to="/add-animal" class="text-white hover:text-blue-200">Add Animal</router-link>
+    </header>
 
-    <!-- Main Content Area -->
-    <v-main class="h-full bg-blue-200">
-      <v-container>
-        <router-view />
-      </v-container>
-    </v-main>
-  </v-app>
+    <main class="flex-1 p-4">
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="animal" class="p-6 rounded-lg shadow-md max-w-4xl mx-auto bg-blue-200">
+  <div v-if="animal" class="p-6 max-w-4xl mx-auto">
     <!-- Animal Details -->
     <div class="mb-6">
       <h1 class="text-3xl font-semibold text-gray-800">{{ animal.animal.name }}</h1>
@@ -142,7 +142,7 @@ export default defineComponent({
     }
 
     const exportToExcel = () => {
-      window.location.href = `/api/animals/${animalId}/export`
+      window.location.href = `http://localhost:5000/animals/${animalId}/export`
     }
 
     return {

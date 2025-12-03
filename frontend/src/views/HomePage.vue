@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="w-screen px-4 flex flex-col items-center justify-between">
-      <h1 class="font-bold text-4xl py-4">Animal List</h1>
+      <h1 class="font-bold text-4xl py-4">Animals List</h1>
       <table class="w-full text-center table-fixed border border-collapse border-gray-400">
         <thead>
           <tr>

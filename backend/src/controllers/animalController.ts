@@ -14,7 +14,7 @@ export const getAllAnimals = async (
     const animals = await Animal.findAll();
     res.json(animals);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).send("Error retrieving animals");
   }
 };

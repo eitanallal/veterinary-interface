@@ -1,3 +1,4 @@
+import ExcelJS from "exceljs";
 import { Request, Response } from "express";
 import { validate } from "class-validator";
 import { plainToClass } from "class-transformer";
@@ -91,5 +92,76 @@ export const getAnimalWithEvents = async (
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error retrieving animal and events" });
+  }
+};
+
+export const exportAnimalToExcel = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { animalId } = req.params;
+
+  if (!animalId) {
+    res.status(400).json({ error: "Animal ID is required" });
+    return;
+  }
+
+  try {
+    const animal = await Animal.findOne({
+      where: { id: animalId },
+      include: {
+        model: Event,
+        as: "events",
+        required: false,
+      },
+    });
+
+    if (!animal) {
+      res.status(404).json({ error: "Animal not found" });
+      return;
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Animal Details");
+
+    worksheet.addRow(["Animal Information"]);
+    worksheet.addRow(["Name", animal.name]);
+    worksheet.addRow(["Species", animal.species]);
+    if (animal.birth_date) {
+      worksheet.addRow(["Birth Date", animal.birth_date]);
+    }
+    worksheet.addRow([]); // Empty row
+
+    worksheet.addRow(["Events"]);
+    worksheet.addRow(["Type", "Description", "Date"]);
+
+    animal.events?.forEach((event: Event) => {
+      worksheet.addRow([event.type, event.description, event.event_date]);
+    });
+
+    // Style the headers
+    worksheet.getRow(1).font = { bold: true, size: 14 };
+    worksheet.getRow(6).font = { bold: true, size: 14 };
+    worksheet.getRow(7).font = { bold: true };
+
+    // Set column widths
+    worksheet.columns = [{ width: 20 }, { width: 40 }, { width: 15 }];
+
+    // Set response headers for file download
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${animal.name}_details.xlsx"`
+    );
+
+    // Write to response
+    await workbook.xlsx.write(res);
+    res.end();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error exporting animal data" });
   }
 };
